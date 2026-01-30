@@ -24,13 +24,16 @@ class LoginResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'token' => $this->token,
-            'user' => [
-                'id'    => $this->id,
-                'name'  => $this->name,
-                'email' => $this->email,
-                'created_at' => $this->created_at,
-            ],
+            'id'           => $this->id,
+            'name'         => $this->name,
+            'year'         => $this->year,
+            'phone'        => $this->phone,
+            'email'        => $this->email,
+            'township'     => $this->township,
+            'state_division'=> $this->state_division,
+            'created_at'   => $this->created_at,
+            'updated_at'   => $this->updated_at,
         ];
+
     }
 }
