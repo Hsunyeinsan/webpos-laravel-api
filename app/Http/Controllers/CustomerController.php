@@ -6,17 +6,50 @@ use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $customers=Customer::all();
 
-        return CustomerResource::collection($customers);
+        $query=Customer::query();
+        $keyword=$request->get("q");
+        $query->where(function ($q) use ($keyword) {
+            $q->where("name","like","%{$keyword}%")
+            ->orWhere("year","like","%{$keyword}%")
+            ->orWhere("phone","like","%{$keyword}%")
+            ->orWhere("email","like","%{$keyword}%")
+            ->orWhere("township","like","%{$keyword}%")
+            ->orWhere("state_division","like","%{$keyword}%");
+        });
+
+        //filter_by
+
+        $filterByStateDivision=$request->get("filter_by_state_division");
+        if($filterByStateDivision){
+            $query->where("state_division",$filterByStateDivision);
+        }
+        $filterByTownship=$request->get("filter_by_township");
+        if($filterByTownship){
+            $query->where("township",$filterByTownship);
+        }
+
+        //order by
+
+        $sort_by=$request->get('sort_by') ?? "id";
+        $sort_direction=$request->get('sort_direction') ?? "desc" ;
+
+        $query ->orderBy($sort_by,$sort_direction);
+        // $query->latest('id');
+        // paginate
+        $customers=$query->paginate(5);
+        return response()->json([
+	        "data"=>CustomerResource::collection($customers)
+        ]);
     }
 
     /**
@@ -25,6 +58,7 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         $customer=Customer::create($request->validated());
+        // $customer=Customer::insert($request->validated());
 
         return response()->json([
             "message"=>"customer created successfully",
@@ -49,6 +83,7 @@ class CustomerController extends Controller
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
         $customer->update($request->validated());
+        
 
         return response()->json([
             "message"=>"Customer updated successfully",
