@@ -34,6 +34,7 @@ class StoreCustomerRequest extends FormRequest
                 'email'         => 'nullable|email|max:255',
                 'township'      => 'nullable|string|max:255',
                 'state_division'=> 'nullable|string|max:255',
+                
 
         ];
     }

@@ -6,7 +6,9 @@ use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -26,6 +28,10 @@ class CustomerController extends Controller
             ->orWhere("township","like","%{$keyword}%")
             ->orWhere("state_division","like","%{$keyword}%");
         });
+
+        //must filter
+
+        $query->where('user_id',Auth::id());
 
         //filter_by
 
@@ -57,7 +63,14 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        $customer=Customer::create($request->validated());
+
+        $customer = Customer::create([
+    ...$request->validated(),
+    'user_id' => Auth::id() ?? 1, // fallback
+]);
+
+        // $customer=Customer::create([...$request->validated(),"user_id"=>Auth::id()]);
+        // $customer=Customer::create($request->validated());
         // $customer=Customer::insert($request->validated());
 
         return response()->json([

@@ -17,6 +17,7 @@ class Customer extends Model
         'email',
         'township',
         'state_division',
+        'user_id',
     ];
 
 }
