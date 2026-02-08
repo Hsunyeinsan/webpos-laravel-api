@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
@@ -24,4 +25,5 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::patch('/change_image','changeProfileImage');
     });   
     Route::apiResource('photos',PhotoController::class)->only('store','destroy'); 
+    Route::apiResource('customers',CustomerController::class);
 });
