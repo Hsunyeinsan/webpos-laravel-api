@@ -15,7 +15,7 @@ class LoginResource extends JsonResource
         parent::__construct($resource);
         $this->token = $token;
 
-        Log::info('token is', ['token' => $this->token]);
+        
     }
 
     public function toArray(Request $request): array
