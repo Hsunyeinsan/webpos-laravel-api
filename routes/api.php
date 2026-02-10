@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
@@ -28,4 +29,5 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('photos',PhotoController::class)->only('store','destroy'); 
     Route::apiResource('customers',CustomerController::class);
     Route::apiResource('categories',CategoryController::class);
+    Route::apiResource('menus',MenuController::class);
 });
