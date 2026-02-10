@@ -74,7 +74,7 @@ class CategoryController extends Controller
         $category->update([...$request->validated(),
         'slug' => $request->filled('title') 
         ? Str::slug($request->title) 
-        : $request->slug
+        : $category->slug
         ]);
 
         return response()->json([
